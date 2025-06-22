@@ -1,0 +1,150 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organizador de Vida Digital Compartido</title>
+    <!-- <link rel="apple-touch-icon" sizes="180x180" href="./Vida_Sebas/apple-touch-icon.png"> -->
+    <!-- <link rel="icon" type="image/png" sizes="32x32" href="./Vida_Sebas/favicon-32x32.png"> -->
+    <!-- <link rel="icon" type="image/png" sizes="16x16" href="./Vida_Sebas/favicon-16x16.png"> -->
+    <!-- <link rel="manifest" href="./Vida_Sebas/site.webmanifest"> -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'custom-crimson': '#DC143C',
+              'bg-dark': '#181a1f',
+              'bg-card': '#22252e',
+              'bg-card-light': '#2a2e37',
+              'text-primary': '#f0f0f0',
+              'text-secondary': '#b0b0b0',
+              'accent-green-medium': '#50fa7b',
+              'accent-green-neon': '#39ff14',
+              'accent-yellow-pale': '#f1fa8c',
+              'accent-yellow-green': '#c3e08d',
+              'accent-blue-info': '#8be9fd',
+              'accent-red-clear': '#ff5555',
+              'accent-gold': '#ffd700',
+              'accent-pink': '#ff79c6',
+              'accent-purple': '#bd93f9',
+              'accent-orange': '#ffb86c',
+              'green-dark': '#2f9e4f',
+              'blue-dark': '#1c7ed6',
+              'orange-dark': '#e8590c',
+              'red-dark': '#c92a2a',
+              'pastel-green-celebration': '#a7f3d0',
+              'celebration-text': '#054228',
+              'celebration-glow': '#6ee7b7',
+            },
+            fontFamily: {
+              rubik: ['Rubik', 'Arial', 'sans-serif'],
+            },
+            boxShadow: {
+              'glow-blue': '0 0 15px rgba(139, 233, 253, 0.5)',
+              'glow-green': '0 0 15px rgba(80, 250, 123, 0.5)',
+              'glow-green-neon': '0 0 15px rgba(57, 255, 20, 0.5)',
+              'glow-red': '0 0 15px rgba(255, 85, 85, 0.5)',
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        font-family: 'Rubik', Arial, sans-serif;
+        /* CAMBIO: Fondo de toda la página a Crimson via Tailwind config */
+      }
+      /* FullCalendar custom vars (Tailwind cannot always target these deeply nested elements easily) */
+      .fc {
+        --fc-border-color: rgba(176, 176, 176, 0.3); /* text-secondary */
+        --fc-daygrid-event-dot-width: 8px;
+        --fc-event-text-color: #181a1f; /* bg-dark */
+        --fc-more-link-bg-color: #2a2e37; /* bg-card-light */
+        --fc-more-link-text-color: #b0b0b0; /* text-secondary */
+        --fc-today-bg-color: transparent;
+        --fc-page-bg-color: transparent;
+        --fc-neutral-bg-color: rgba(42, 46, 55, 0.5); /* bg-card-light-rgb */
+      }
+      .fc .fc-toolbar-title { font-size: 1.5em !important; color: #f1fa8c; } /* accent-yellow-pale */
+      .fc .fc-button { background-color: #2a2e37; border-color: rgba(240,240,240,0.1); color: #f0f0f0; box-shadow: none;}
+      .fc .fc-button:hover { background-color: #8be9fd; color: #181a1f; } /* accent-blue-info, bg-dark */
+      .fc .fc-button-primary:disabled { background-color: #22252e; color: #b0b0b0; } /* bg-card, text-secondary */
+      .fc th { border-color: var(--fc-border-color) !important; color: #c3e08d; } /* accent-yellow-green */
+      .fc .fc-daygrid-day-number { color: #b0b0b0; } /* text-secondary */
+      .fc .fc-day-today {
+          box-shadow: 0 0 18px 8px rgba(241, 250, 140, 0.5); /* accent-yellow-pale-rgb */
+          border-radius: 12px;
+          position: relative;
+          z-index: 1;
+      }
+      .fc .fc-day-today .fc-daygrid-day-frame { overflow: visible !important; }
+      .fc .fc-day-today .fc-daygrid-day-number { font-weight: bold; color: #f1fa8c; } /* accent-yellow-pale */
+      .fc-event { white-space: normal !important; font-size: 0.85em; padding: 2px 4px; }
+      .fc-event .fc-event-main { overflow: hidden; text-overflow: ellipsis; }
+
+      /* Custom scrollbar for Webkit browsers */
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 8px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: rgba(42, 46, 55, 0.3); /* bg-card-light with opacity */
+        border-radius: 10px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background-color: #50fa7b; /* accent-green-medium */
+        border-radius: 10px;
+        border: 2px solid rgba(42, 46, 55, 0.3); /* bg-card-light with opacity */
+      }
+      /* Custom scrollbar for Firefox */
+      .custom-scrollbar {
+        scrollbar-width: thin;
+        scrollbar-color: #50fa7b rgba(42, 46, 55, 0.5); /* accent-green-medium and bg-card-light with opacity */
+      }
+      /* Range input thumb style for Ambiance Player */
+      .range-thumb-cyan::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        background: #8be9fd; /* accent-blue-info */
+        cursor: pointer;
+        border-radius: 50%;
+        margin-top: -6px; /* Adjust to center */
+      }
+      .range-thumb-cyan::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        background: #8be9fd; /* accent-blue-info */
+        cursor: pointer;
+        border-radius: 50%;
+        border: none;
+      }
+
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.1.0",
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "lucide-react": "https://esm.sh/lucide-react@^0.522.0",
+    "react-dom/client": "https://esm.sh/react-dom@^19.1.0/client",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/"
+  }
+}
+</script>
+<!-- <link rel="stylesheet" href="./index.css"> --> <!-- Commented out as index.css is not provided -->
+<link rel="stylesheet" href="/index.css">
+</head>
+<body class="bg-custom-crimson text-text-primary font-rubik">
+    <div id="root"></div>
+    <script src="https://www.gstatic.com/firebasejs/9.19.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.19.1/firebase-firestore-compat.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js'></script>
+    <script type="module" src="./index.tsx"></script>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>
