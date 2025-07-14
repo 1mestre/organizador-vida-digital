@@ -1,150 +1,405 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Organizador de Vida Digital Compartido</title>
-    <!-- <link rel="apple-touch-icon" sizes="180x180" href="./Vida_Sebas/apple-touch-icon.png"> -->
-    <!-- <link rel="icon" type="image/png" sizes="32x32" href="./Vida_Sebas/favicon-32x32.png"> -->
-    <!-- <link rel="icon" type="image/png" sizes="16x16" href="./Vida_Sebas/favicon-16x16.png"> -->
-    <!-- <link rel="manifest" href="./Vida_Sebas/site.webmanifest"> -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              'custom-crimson': '#DC143C',
-              'bg-dark': '#181a1f',
-              'bg-card': '#22252e',
-              'bg-card-light': '#2a2e37',
-              'text-primary': '#f0f0f0',
-              'text-secondary': '#b0b0b0',
-              'accent-green-medium': '#50fa7b',
-              'accent-green-neon': '#39ff14',
-              'accent-yellow-pale': '#f1fa8c',
-              'accent-yellow-green': '#c3e08d',
-              'accent-blue-info': '#8be9fd',
-              'accent-red-clear': '#ff5555',
-              'accent-gold': '#ffd700',
-              'accent-pink': '#ff79c6',
-              'accent-purple': '#bd93f9',
-              'accent-orange': '#ffb86c',
-              'green-dark': '#2f9e4f',
-              'blue-dark': '#1c7ed6',
-              'orange-dark': '#e8590c',
-              'red-dark': '#c92a2a',
-              'pastel-green-celebration': '#a7f3d0',
-              'celebration-text': '#054228',
-              'celebration-glow': '#6ee7b7',
-            },
-            fontFamily: {
-              rubik: ['Rubik', 'Arial', 'sans-serif'],
-            },
-            boxShadow: {
-              'glow-blue': '0 0 15px rgba(139, 233, 253, 0.5)',
-              'glow-green': '0 0 15px rgba(80, 250, 123, 0.5)',
-              'glow-green-neon': '0 0 15px rgba(57, 255, 20, 0.5)',
-              'glow-red': '0 0 15px rgba(255, 85, 85, 0.5)',
-            }
-          }
-        }
-      }
-    </script>
+    <title>Planes de Precios - Dialéctica</title>
     <style>
-      body {
-        font-family: 'Rubik', Arial, sans-serif;
-        /* CAMBIO: Fondo de toda la página a Crimson via Tailwind config */
-      }
-      /* FullCalendar custom vars (Tailwind cannot always target these deeply nested elements easily) */
-      .fc {
-        --fc-border-color: rgba(176, 176, 176, 0.3); /* text-secondary */
-        --fc-daygrid-event-dot-width: 8px;
-        --fc-event-text-color: #181a1f; /* bg-dark */
-        --fc-more-link-bg-color: #2a2e37; /* bg-card-light */
-        --fc-more-link-text-color: #b0b0b0; /* text-secondary */
-        --fc-today-bg-color: transparent;
-        --fc-page-bg-color: transparent;
-        --fc-neutral-bg-color: rgba(42, 46, 55, 0.5); /* bg-card-light-rgb */
-      }
-      .fc .fc-toolbar-title { font-size: 1.5em !important; color: #f1fa8c; } /* accent-yellow-pale */
-      .fc .fc-button { background-color: #2a2e37; border-color: rgba(240,240,240,0.1); color: #f0f0f0; box-shadow: none;}
-      .fc .fc-button:hover { background-color: #8be9fd; color: #181a1f; } /* accent-blue-info, bg-dark */
-      .fc .fc-button-primary:disabled { background-color: #22252e; color: #b0b0b0; } /* bg-card, text-secondary */
-      .fc th { border-color: var(--fc-border-color) !important; color: #c3e08d; } /* accent-yellow-green */
-      .fc .fc-daygrid-day-number { color: #b0b0b0; } /* text-secondary */
-      .fc .fc-day-today {
-          box-shadow: 0 0 18px 8px rgba(241, 250, 140, 0.5); /* accent-yellow-pale-rgb */
-          border-radius: 12px;
-          position: relative;
-          z-index: 1;
-      }
-      .fc .fc-day-today .fc-daygrid-day-frame { overflow: visible !important; }
-      .fc .fc-day-today .fc-daygrid-day-number { font-weight: bold; color: #f1fa8c; } /* accent-yellow-pale */
-      .fc-event { white-space: normal !important; font-size: 0.85em; padding: 2px 4px; }
-      .fc-event .fc-event-main { overflow: hidden; text-overflow: ellipsis; }
+        /* Importa las fuentes de Google Fonts:
+          - Inter: Fuente principal para el cuerpo del texto.
+          - Lato: Fuente destacada para títulos, precios y botones.
+        */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lato:wght@900&display=swap');
 
-      /* Custom scrollbar for Webkit browsers */
-      .custom-scrollbar::-webkit-scrollbar {
-        width: 8px;
-      }
-      .custom-scrollbar::-webkit-scrollbar-track {
-        background: rgba(42, 46, 55, 0.3); /* bg-card-light with opacity */
-        border-radius: 10px;
-      }
-      .custom-scrollbar::-webkit-scrollbar-thumb {
-        background-color: #50fa7b; /* accent-green-medium */
-        border-radius: 10px;
-        border: 2px solid rgba(42, 46, 55, 0.3); /* bg-card-light with opacity */
-      }
-      /* Custom scrollbar for Firefox */
-      .custom-scrollbar {
-        scrollbar-width: thin;
-        scrollbar-color: #50fa7b rgba(42, 46, 55, 0.5); /* accent-green-medium and bg-card-light with opacity */
-      }
-      /* Range input thumb style for Ambiance Player */
-      .range-thumb-cyan::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        appearance: none;
-        width: 20px;
-        height: 20px;
-        background: #8be9fd; /* accent-blue-info */
-        cursor: pointer;
-        border-radius: 50%;
-        margin-top: -6px; /* Adjust to center */
-      }
-      .range-thumb-cyan::-moz-range-thumb {
-        width: 20px;
-        height: 20px;
-        background: #8be9fd; /* accent-blue-info */
-        cursor: pointer;
-        border-radius: 50%;
-        border: none;
-      }
+        /* Define las variables de color */
+        :root {
+            --background-color: #F7F9FC; /* Fondo blanco sutil */
+            --card-background: #ffffff;
+            --text-color: #1d1d1f;
+            --border-color: #e8e8ed;
+            --text-secondary-color: #6e6e73;
+        }
+        
+        /* Estilos base para el cuerpo del documento */
+        body {
+            font-family: 'Inter', 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 60px 20px;
+            box-sizing: border-box;
+        }
+
+        /* Contenedor principal para las tarjetas de precios */
+        .pricing-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        /* Estilo individual para cada tarjeta de precios */
+        .pricing-card {
+            background-color: var(--card-background);
+            border-radius: 22px;
+            padding: 40px;
+            width: 100%;
+            max-width: 340px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border-color);
+            /* Borde superior coloreado para resaltar cada plan */
+            border-top: 6px solid var(--accent-color);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInSlideUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.15);
+        }
+
+        .pricing-card:nth-child(1) { animation-delay: 0.1s; }
+        .pricing-card:nth-child(2) { animation-delay: 0.2s; }
+        .pricing-card:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes fadeInSlideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px; /* Aumentado el espacio */
+        }
+
+        /* Nombres de los planes: Tipografía Lato unificada */
+        .card-header h3 {
+            font-family: 'Lato', sans-serif;
+            font-size: 30px;
+            font-weight: 900; /* Black */
+            color: var(--accent-color);
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .info-icon {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 2px solid #c5c5c7;
+            color: #c5c5c7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .pricing-card:hover .info-icon {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+        .info-icon:after{ content: "i"; }
+
+        /* Precios grandes: Tipografía Lato unificada */
+        .price {
+            font-family: 'Lato', sans-serif;
+            font-size: 48px;
+            font-weight: 900; /* Black */
+            color: var(--text-color);
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .price span {
+            font-family: 'Inter', sans-serif;
+            font-size: 18px;
+            font-weight: 600; /* Semi-Bold */
+            color: var(--text-secondary-color);
+        }
+
+        /* Ahorro mensual: Medium/Regular */
+        .description {
+            font-size: 17px;
+            line-height: 1.5;
+            margin-top: 8px;
+            color: var(--text-secondary-color);
+            font-weight: 500; /* Medium */
+        }
+
+        .description strong {
+            color: var(--accent-color);
+            font-weight: 600; /* Semi-Bold */
+        }
+        
+        /* Texto de "Share with...": Regular */
+        .share-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+            font-weight: 400; /* Regular */
+            color: var(--text-secondary-color);
+            margin-top: 15px;
+        }
+        .share-info svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--text-secondary-color);
+        }
+
+        .main-separator {
+            border: none;
+            height: 1px;
+            background-color: #d2d2d7;
+            margin: 30px 0;
+        }
+
+        .features-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+            font-size: 16px;
+        }
+        
+        .feature-name {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600; /* Semi-Bold, buen contraste */
+        }
+
+        .feature-icon {
+            width: 24px;
+            height: 24px;
+            fill: var(--text-color);
+            transition: fill 0.3s ease;
+        }
+        .pricing-card:hover .feature-icon {
+            fill: var(--accent-color);
+        }
+
+        .feature-price {
+            font-weight: 400; /* Regular */
+            color: #86868b;
+        }
+
+        .total-separator {
+            width: 60px;
+            height: 1.5px;
+            margin: 25px auto 20px auto;
+            background-color: #d2d2d7;
+            border: none;
+        }
+
+        .total-section {
+            font-size: 15px;
+            text-align: right;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: #86868b;
+            font-weight: 400; /* Regular */
+        }
+
+        .final-price {
+            font-weight: 700; /* Bold */
+            font-size: 19px;
+            color: var(--text-color);
+        }
+
+        /* Botón de compra con la tipografía Lato */
+        .buy-button {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-family: 'Lato', sans-serif;
+            font-weight: 900; /* Black */
+            font-size: 17px;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 30px;
+            width: 100%;
+        }
+        .buy-button:hover {
+            filter: brightness(1.1);
+            transform: scale(1.02);
+        }
+
+        /* Colorimetría específica para cada tarjeta */
+        .card-esencial { --accent-color: #2783B8; }
+        .card-crecimiento { --accent-color: #8A4FFF; }
+        .card-estrategia { --accent-color: #D4AF37; }
 
     </style>
-<script type="importmap">
-{
-  "imports": {
-    "react": "https://esm.sh/react@^19.1.0",
-    "react/": "https://esm.sh/react@^19.1.0/",
-    "lucide-react": "https://esm.sh/lucide-react@^0.522.0",
-    "react-dom/client": "https://esm.sh/react-dom@^19.1.0/client",
-    "react-dom/": "https://esm.sh/react-dom@^19.1.0/"
-  }
-}
-</script>
-<!-- <link rel="stylesheet" href="./index.css"> --> <!-- Commented out as index.css is not provided -->
-<link rel="stylesheet" href="/index.css">
 </head>
-<body class="bg-custom-crimson text-text-primary font-rubik">
-    <div id="root"></div>
-    <script src="https://www.gstatic.com/firebasejs/9.19.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.19.1/firebase-firestore-compat.js"></script>
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js'></script>
-    <script type="module" src="./index.tsx"></script>
-<script type="module" src="/index.tsx"></script>
+<body>
+
+    <!-- Definición de los íconos SVG para reusar -->
+    <svg width="0" height="0" style="display:none;">
+      <symbol id="dialectica-d-logo" viewBox="0 0 24 24">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1.24 14.55c-2.13-.4-3.43-2.3-2.8-4.45.52-1.83 2.4-2.95 4.3-2.84 2.23.13 3.82 1.95 3.82 4.07 0 2.4-1.98 4.38-4.44 4.38-0.3 0-0.59-.03-0.88-.06z"/>
+      </symbol>
+      <symbol id="share-icon" viewBox="0 0 24 24">
+        <path d="M16 13c-1.32 0-2.5.56-3.35 1.45l-5.2-2.71C7.62 11.4 7.8 11.04 8 10.65c.2-.39.38-.75.55-1.1L13.65 12c.17.35.38.71.55 1.1.48 1.08.7 2.24.7 3.4 0 .96-.18 1.88-.5 2.71l5.2 2.71c.85-.89 2.03-1.45 3.35-1.45 2.76 0 5 2.24 5 5s-2.24 5-5 5-5-2.24-5-5c0-1.16.22-2.32.7-3.4L9.55 14.95c-.17-.35-.38-.71-.55-1.1-.48-1.08-.7-2.24-.7-3.4 0-.96.18-1.88.5-2.71L3.65 5C2.79 5.89 1.62 6.45 0 6.45c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5c0 1.16-.22 2.32-.7 3.4l5.15 2.65c.17.35.38.71.55 1.1.48 1.08.7 2.24.7 3.4z"/>
+      </symbol>
+    </svg>
+
+    <div class="pricing-container">
+        <!-- Tarjeta del Plan Esencial -->
+        <div class="pricing-card card-esencial">
+            <div class="card-header">
+                <h3>Esencial</h3>
+                <div class="info-icon"></div>
+            </div>
+            <p class="price">$49<span>/mes.</span></p>
+            <p class="description">Ahorra <strong>$26/mes</strong> en asesoría y herramientas clave para tu pyme.</p>
+            <hr class="main-separator">
+            <ul class="features-list">
+                <li class="feature-item">
+                    <div class="feature-name">
+                        <svg class="feature-icon"><use href="#dialectica-d-logo"/></svg>
+                        <span>Asesoría Básica</span>
+                    </div>
+                    <span class="feature-price">$35/mes.</span>
+                </li>
+                <li class="feature-item">
+                    <div class="feature-name">
+                        <svg class="feature-icon"><use href="#dialectica-d-logo"/></svg>
+                        <span>Guía Digital</span>
+                    </div>
+                    <span class="feature-price">$20/mes.</span>
+                </li>
+                <li class="feature-item">
+                    <div class="feature-name">
+                        <svg class="feature-icon"><use href="#dialectica-d-logo"/></svg>
+                        <span>Herramientas Clave</span>
+                    </div>
+                    <span class="feature-price">$20/mes.</span>
+                </li>
+            </ul>
+            <hr class="total-separator">
+            <div class="total-section">
+                <p class="original-price">$75/mes.</p>
+                <p class="final-price">$49/mes.</p>
+            </div>
+            <button class="buy-button">Comprar Plan</button>
+        </div>
+
+        <!-- Tarjeta del Plan Crecimiento -->
+        <div class="pricing-card card-crecimiento">
+            <div class="card-header">
+                <h3>Crecimiento</h3>
+                <div class="info-icon"></div>
+            </div>
+            <p class="price">$119<span>/mes.</span></p>
+            <p class="description">Ahorra <strong>$56/mes</strong> con un acompañamiento completo para modernizar tu negocio.</p>
+            <div class="share-info">
+                <svg><use href="#share-icon"/></svg>
+                <span>Comparte con hasta cinco personas</span>
+            </div>
+            <hr class="main-separator">
+            <ul class="features-list">
+                <li class="feature-item">
+                    <div class="feature-name">
+                        <svg class="feature-icon"><use href="#dialectica-d-logo"/></svg>
+                        <span>Modernización Operativa</span>
+                    </div>
+                    <span class="feature-price">$75/mes.</span>
+                </li>
+                <li class="feature-item">
+                    <div class="feature-name">
+                        <svg class="feature-icon"><use href="#dialectica-d-logo"/></svg>
+                        <span>Optimización de Ventas</span>
+                    </div>
+                    <span class="feature-price">$50/mes.</span>
+                </li>
+                <li class="feature-item">
+                    <div class="feature-name">
+                        <svg class="feature-icon"><use href="#dialectica-d-logo"/></svg>
+                        <span>Gestión de Procesos</span>
+                    </div>
+                    <span class="feature-price">$50/mes.</span>
+                </li>
+            </ul>
+            <hr class="total-separator">
+            <div class="total-section">
+                <p class="original-price">$175/mes.</p>
+                <p class="final-price">$119/mes.</p>
+            </div>
+            <button class="buy-button">Comprar Plan</button>
+        </div>
+
+        <!-- Tarjeta del Plan Estrategia -->
+        <div class="pricing-card card-estrategia">
+            <div class="card-header">
+                <h3>Estrategia</h3>
+                <div class="info-icon"></div>
+            </div>
+            <p class="price">$249<span>/mes.</span></p>
+            <p class="description">Ahorra <strong>$126/mes</strong> en consultoría de alto nivel para escalar y liderar tu mercado.</p>
+            <div class="share-info">
+                <svg><use href="#share-icon"/></svg>
+                <span>Comparte con hasta cinco personas</span>
+            </div>
+            <hr class="main-separator">
+            <ul class="features-list">
+                <li class="feature-item">
+                    <div class="feature-name">
+                        <svg class="feature-icon"><use href="#dialectica-d-logo"/></svg>
+                        <span>Consultoría Estratégica</span>
+                    </div>
+                    <span class="feature-price">$150/mes.</span>
+                </li>
+                <li class="feature-item">
+                    <div class="feature-name">
+                        <svg class="feature-icon"><use href="#dialectica-d-logo"/></svg>
+                        <span>Optimización Avanzada</span>
+                    </div>
+                    <span class="feature-price">$125/mes.</span>
+                </li>
+                <li class="feature-item">
+                    <div class="feature-name">
+                        <svg class="feature-icon"><use href="#dialectica-d-logo"/></svg>
+                        <span>Soporte Prioritario</span>
+                    </div>
+                    <span class="feature-price">$100/mes.</span>
+                </li>
+            </ul>
+            <hr class="total-separator">
+            <div class="total-section">
+                <p class="original-price">$375/mes.</p>
+                <p class="final-price">$249/mes.</p>
+            </div>
+            <button class="buy-button">Comprar Plan</button>
+        </div>
+    </div>
+
 </body>
 </html>
